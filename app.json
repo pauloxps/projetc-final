@@ -3,6 +3,7 @@
     "name": "o-preco-do-dia",
     "slug": "o-preco-do-dia",
     "version": "1.0.0",
+    "scheme": "o-preco-do-dia",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -23,6 +24,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "43a6e0cf-c05a-4f98-a923-00708f55fdbf"
+      }
+    },
+    "owner": "pauloxps",
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
