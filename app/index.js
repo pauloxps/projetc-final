@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    backgroundColor: "#f0f0f0", // Cor de fundo clara
+    backgroundColor: "#fff", // Cor de fundo do corpo
     justifyContent: "center", // Garante que o conteúdo seja centralizado
   },
   overlay: {

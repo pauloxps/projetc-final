@@ -11,26 +11,44 @@ const AdicionarLocalScreen = () => {
   const [logradouro, setLogradouro] = useState("");
   const [cidade, setCidade] = useState("");
   const [estado, setEstado] = useState("");
+  const [numero, setNumero] = useState(""); // Novo campo
+  const [bairro, setBairro] = useState(""); // Novo campo
 
   const handleSubmit = async () => {
-    if (!nome || !cep || !logradouro || !cidade || !estado) {
-      Alert.alert("Erro", "Por favor, preencha todos os campos!");
+    if (!nome || !cep || !logradouro || !cidade || !estado || !numero || !bairro) {
+      Alert.alert("Erro", "Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    if (cep.length !== 8 || isNaN(cep)) {
+      Alert.alert("Erro", "Digite um CEP válido com 8 dígitos.");
       return;
     }
 
     try {
-      // Envia a requisição POST para adicionar o local
-      const response = await axios.post("https://api-produtos-6p7n.onrender.com/locations", {
+      const response = await axios.post("https://api-produtos-9jmi.onrender.com/locations", {
         nome,
         cep,
         logradouro,
         cidade,
         estado,
+        numero, // Enviar o número
+        bairro, // Enviar o bairro
       });
-      Alert.alert("Sucesso", "Local adicionado com sucesso!");
-      router.push("/home");
+
+      if (response.status === 201) {
+        Alert.alert("Sucesso", "Local adicionado com sucesso!");
+        router.push("/home");
+      }
     } catch (error) {
-      Alert.alert("Erro", "Ocorreu um erro ao adicionar o local.");
+      // Log de erro detalhado
+      if (error.response) {
+        console.error("Erro na requisição:", error.response.data);
+        Alert.alert("Erro", "Ocorreu um erro ao adicionar o local: " + error.response.data.message);
+      } else {
+        console.error("Erro no servidor:", error.message);
+        Alert.alert("Erro", "Ocorreu um erro ao conectar ao servidor.");
+      }
     }
   };
 
@@ -52,10 +70,11 @@ const AdicionarLocalScreen = () => {
             <Text style={styles.label}>CEP</Text>
             <TextInput
               style={styles.input}
-              placeholder="Digite o CEP"
+              placeholder="Digite o CEP (8 dígitos)"
               value={cep}
               onChangeText={setCep}
               keyboardType="numeric"
+              maxLength={8}
             />
           </View>
 
@@ -86,6 +105,27 @@ const AdicionarLocalScreen = () => {
               placeholder="Digite o estado"
               value={estado}
               onChangeText={setEstado}
+            />
+          </View>
+
+          <View style={styles.fieldContainer}>
+            <Text style={styles.label}>Número</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Digite o número"
+              value={numero}
+              onChangeText={setNumero}
+              keyboardType="numeric"
+            />
+          </View>
+
+          <View style={styles.fieldContainer}>
+            <Text style={styles.label}>Bairro</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Digite o bairro"
+              value={bairro}
+              onChangeText={setBairro}
             />
           </View>
 

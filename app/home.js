@@ -10,6 +10,7 @@ import {
   Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons"; // Biblioteca de ícones
 
 const ListarProdutosScreen = () => {
   const router = useRouter();
@@ -19,7 +20,7 @@ const ListarProdutosScreen = () => {
   useEffect(() => {
     const fetchProdutos = async () => {
       try {
-        const response = await fetch("https://api-produtos-6p7n.onrender.com/products");
+        const response = await fetch("https://api-produtos-9jmi.onrender.com/products");
         const data = await response.json();
         setProdutos(data); // Salva os produtos recebidos
       } catch (error) {
@@ -31,7 +32,7 @@ const ListarProdutosScreen = () => {
     fetchProdutos();
   }, []);
 
-  // Função para filtrar os produtos pela pesquisa
+  // Filtrar produtos pela pesquisa
   const filteredProdutos = produtos.filter((produto) =>
     produto.nome.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -55,7 +56,9 @@ const ListarProdutosScreen = () => {
               <Text style={styles.productPrice}>R$ {item.preco}</Text>
               {item.image && (
                 <Image
-                  source={{ uri: `https://api-produtos-6p7n.onrender.com/${item.image}` }}
+                  source={{
+                    uri: `https://api-produtos-9jmi.onrender.com/${item.image}`, // URL da imagem
+                  }}
                   style={styles.productImage}
                 />
               )}
@@ -65,6 +68,9 @@ const ListarProdutosScreen = () => {
               <Text style={styles.productDetails}>
                 Local: {item.Location?.nome || "N/A"}
               </Text>
+              <Text style={styles.productDetails}>
+                Usuário: {item.usuario || "N/A"}
+              </Text>
             </View>
           )}
         />
@@ -72,12 +78,37 @@ const ListarProdutosScreen = () => {
         <Text style={styles.noProductsText}>Nenhum produto encontrado.</Text>
       )}
 
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => router.push("/adicionar-produto")}
-      >
-        <Text style={styles.addButtonText}>Adicionar Produto</Text>
-      </TouchableOpacity>
+      {/* Barra de Navegação no Footer */}
+      <View style={styles.footer}>
+        <TouchableOpacity
+          style={styles.footerButton}
+          onPress={() => router.push("/")} // Navega para a tela inicial
+        >
+          <Ionicons name="log-out-outline" size={18} color="#333" />
+          <Text style={styles.footerText}></Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton} onPress={() => router.push("/home")}>
+          <Ionicons name="home-outline" size={18} color="#333" />
+          <Text style={styles.footerText}></Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.footerButton} onPress={() => router.push("/adicionap")}>
+          <Ionicons name="add-circle-outline" size={18} color="#333" />
+          <Text style={styles.footerText}></Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton} onPress={() => router.push("/categoria")}>
+          <Ionicons name="grid-outline" size={18} color="#333" />
+          <Text style={styles.footerText}></Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton} onPress={() => router.push("/adicionarLocal")}>
+          <Ionicons name="map-outline" size={18} color="#333" />
+          <Text style={styles.footerText}></Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton} onPress={() => router.push("/editarPerfil")}>
+          <Ionicons name="person-circle-outline" size={18} color="#333" />
+          <Text style={styles.footerText}></Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -129,17 +160,21 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: "#777",
   },
-  addButton: {
-    backgroundColor: "#4CAF50",
-    padding: 15,
-    borderRadius: 5,
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
     alignItems: "center",
-    marginTop: 20,
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#ddd",
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
   },
-  addButtonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
+  footerButton: {
+    alignItems: "center",
+    padding: 10,
   },
 });
 

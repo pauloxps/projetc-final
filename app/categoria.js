@@ -7,14 +7,16 @@ const AdicionarCategoriaScreen = () => {
   const [nome, setNome] = useState(""); // Estado para o nome da categoria
   const router = useRouter();
 
+  // Função para salvar a categoria
   const handleSave = async () => {
-    if (!nome) {
+    if (!nome.trim()) {  // Verificando se o nome está vazio ou só contém espaços
       Alert.alert("Erro", "Por favor, preencha o nome da categoria!");
       return;
     }
 
     try {
-      const response = await fetch("https://api-produtos-6p7n.onrender.com/api/categories", {
+      // Enviando requisição POST para a API de categorias
+      const response = await fetch("https://api-produtos-9jmi.onrender.com/categories/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,6 +42,7 @@ const AdicionarCategoriaScreen = () => {
     }
   };
 
+  // Funções para navegação entre telas
   const handleahome = () => {
     router.push("/home"); // Navega para a tela home
   };
